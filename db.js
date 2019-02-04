@@ -1,6 +1,15 @@
 const sql = require('sql-template-strings');
 const pg = require('pg');
-const client = new pg.Client('postgres://localhost/acme_web');
+
+//For local machine db
+// const client = new pg.Client('postgres://localhost/acme_web');
+
+//For Cloud 9 db
+const client = new pg.Client({
+  host: 'localhost',
+  user: 'postgres',
+  password: 'password',
+});
 
 const SEED = sql`
   DROP TABLE IF EXISTS content;
@@ -41,28 +50,13 @@ const getPages = () => {
 
 const getPage = (id) => {
   return client.query(sql`SELECT * FROM pages WHERE id = $1`, [id])
-  .then(data => data.rows[0])
+  .then(data => data.rows[0]);
 }
 
-const getPageContent = (id) => {
-  return client.query(sql`SELECT * content WHERE page_id =$1`, [id])
-  .then(data => data.rows)
+const getPageContent = (idOfPage) => {
+  return client.query(sql`SELECT * FROM content WHERE page_id =$1`, [idOfPage])
+  .then(data => data.rows);
 }
-
-// client
-//   .connect()
-//   .then(() => client.query(SEED))
-//   .then(() => getPages())
-//   .then(pages => pages.reduce((acc, page) => {
-//     acc[page.name] = page;
-//     return acc;
-//   }, {} ))
-//   .then(pagesObj => {
-//     const pageId = pagesObj.Home.id;
-//     return getPage(pageId);
-//   })
-//   .then(page => console.log(page))
-//   .catch(ex => console.log(ex));
 
 module.exports = {
   sync,
