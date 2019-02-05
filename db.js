@@ -2,14 +2,14 @@ const sql = require('sql-template-strings');
 const pg = require('pg');
 
 //For local machine db
-// const client = new pg.Client('postgres://localhost/acme_web');
+const client = new pg.Client('postgres://localhost/acme_web');
 
 //For Cloud 9 db
-const client = new pg.Client({
-  host: 'localhost',
-  user: 'postgres',
-  password: 'password',
-});
+// const client = new pg.Client({
+//   host: 'localhost',
+//   user: 'postgres',
+//   password: 'password',
+// });
 
 const SEED = sql`
   DROP TABLE IF EXISTS content;
@@ -53,8 +53,8 @@ const getPage = (id) => {
   .then(data => data.rows[0]);
 }
 
-const getPageContent = (idOfPage) => {
-  return client.query(sql`SELECT * FROM content WHERE page_id =$1`, [idOfPage])
+const getPageContent = (pageId) => {
+  return client.query(sql`SELECT * FROM content WHERE page_id =$1`, [pageId])
   .then(data => data.rows);
 }
 
