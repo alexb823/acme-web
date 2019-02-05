@@ -16,9 +16,17 @@ app.use((req, res, next) => {
     .catch(next);
 });
 
+app.use((req, res, next) => {
+  db.getHomePage()
+    .then(page => {
+      req.homePage = page;
+      next();
+    })
+    .catch(next);
+});
+
 app.get('/', (req, res, next) => {
-  const page = req.pages[0];
-  res.redirect(`/pages/${page.id}`);
+  res.redirect(`/pages/${req.homePage.id}`);
 });
 
 app.get('/pages/:id', (req, res, next) => {

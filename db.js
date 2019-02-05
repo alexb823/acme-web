@@ -48,19 +48,20 @@ const getPages = () => {
   .then(data => data.rows);
 };
 
-const getPage = (id) => {
-  return client.query(sql`SELECT * FROM pages WHERE id = $1`, [id])
-  .then(data => data.rows[0]);
-}
-
 const getPageContent = (pageId) => {
   return client.query(sql`SELECT * FROM content WHERE page_id =$1`, [pageId])
   .then(data => data.rows);
 }
 
+const getHomePage = () => {
+  return client.query(sql`SELECT * FROM pages WHERE is_home_page=$1`, [true])
+  .then(data => data.rows[0])
+}
+
+
 module.exports = {
   sync,
   getPages,
-  getPage,
+  getHomePage,
   getPageContent
 }
