@@ -1,6 +1,6 @@
 const html = require('html-template-tag');
 
-function loadAcmePage(pages, pageContent) {
+function loadAcmePage(pages, pageContent, currentPgId) {
   return html`
     <!DOCTYPE html>
     <html>
@@ -17,7 +17,11 @@ function loadAcmePage(pages, pageContent) {
             ${pages.map(page => {
               return html`
                 <li class="nav-item">
-                  <a class="nav-link" href="/pages/${page.id}">${page.name}</a>
+                  <a
+                    class="nav-link ${page.id === currentPgId ? 'active' : ''}"
+                    href="/pages/${page.id}"
+                    >${page.name}</a
+                  >
                 </li>
               `;
             })}

@@ -30,8 +30,9 @@ app.get('/', (req, res, next) => {
 });
 
 app.get('/pages/:id', (req, res, next) => {
-  db.getPageContent(req.params.id)
-    .then(pageContent => res.send(loadAcmePage(req.pages, pageContent)))
+  const currentPgId = req.params.id*1;
+  db.getPageContent(currentPgId)
+    .then(pageContent => res.send(loadAcmePage(req.pages, pageContent, currentPgId)))
     .catch(next);
 });
 
